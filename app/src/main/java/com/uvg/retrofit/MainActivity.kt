@@ -1,6 +1,6 @@
 package com.uvg.retrofit
 
-import android.R
+
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -13,6 +13,8 @@ import com.uvg.retrofit.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+
 
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, View.OnClickListener {
@@ -21,8 +23,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, View.O
     private lateinit var adapter: ArticleAdapter
     private val articleList = mutableListOf<Articles>()
 
-    lateinit var country : String
-    lateinit var category : String
+    public var country : String = ""
+    public var category : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +36,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, View.O
         initRecyclerView()
         searchNew("general")
 
-        val button: Button = findViewById(R.id.button1)
-        val button1: Button = findViewById(R.id.button2)
-        val button2 : Button = findViewById(R.id.button3)
-        button.setOnClickListener(this)
+        val button1: Button = findViewById(R.id.gb)
+        val button2: Button = findViewById(R.id.br)
+        val button3: Button = findViewById(R.id.de)
         button1.setOnClickListener(this)
         button2.setOnClickListener(this)
+        button3.setOnClickListener(this)
 
     }
 
@@ -52,18 +54,18 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, View.O
     }
 
     override fun onClick(v: View) {
-        when(v.getId()) {
-            R.id.button1 -> {
+        when(v.id) {
+            R.id.gb -> {
                 //Cambiar a Inglaterra
                 country = "gb"
                 searchNew(category)
             }
-            R.id.button2 -> {
+            R.id.br -> {
                 //Cambiar a Brasil
                 country = "br"
                 searchNew(category)
             }
-            R.id.button3 -> {
+            R.id.de -> {
                 //Cambiar a Alemania
                 country = "de"
                 searchNew(category)
@@ -115,8 +117,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, View.O
     override fun onQueryTextSubmit(query: String?): Boolean {
         showMessage(query.toString())
         if (!query.isNullOrEmpty()){
-            searchNew(query.toLowerCase())
-            category = query.toLowerCase()
+            searchNew(query.toLowerCase(Locale.ROOT))
+            category = query.toLowerCase(Locale.ROOT)
         }
         return true
     }
